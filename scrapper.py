@@ -120,6 +120,7 @@ def generate_data():
     for k in assets:
         res[k] = round(response[k] * usd_brl / ratios[k], 4)
         
+    assets.remove("WEB311")
     pairs = [(a, b) for idx, a in enumerate(assets) for b in assets[idx + 1:]]
     for pair in pairs:
         res[f"{pair[0]}_{pair[1]}"] = round(res[pair[0]] / res[pair[1]], 4)
@@ -148,12 +149,11 @@ def calculculate_ratios():
         json.dump(ratios, file)
     
 
-
 import streamlit as st
-
+from streamlit_autorefresh import st_autorefresh
 
 st.dataframe(generate_data())
 
-
+st_autorefresh(interval=60*1000, limit=100000000, key="fizzbuzzcounter")
 
 
