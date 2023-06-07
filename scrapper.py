@@ -121,11 +121,16 @@ def generate_data():
     res = {}
     for k in assets:
         res[k] = round(response[k] * usd_brl / ratios[k], 4)
-        
-    assets.remove("WEB311")
-    pairs = [(a, b) for idx, a in enumerate(assets) for b in assets[idx + 1:]]
+    
+    pairs = [
+        "QBTC11_HASH11",
+        "HASH11_ETHE11",
+        "HASH11_BITH11",
+        "ETHE11_BITH11"
+    ]
+    
     for pair in pairs:
-        res[f"{pair[0]}_{pair[1]}"] = round(res[pair[0]] / res[pair[1]], 4)
+        res[pair] = round(res[pair.split("_")[0]] / res[pair.split("_")[1]], 4)
     
     # traspose dataframe
     df = pd.DataFrame([res])
