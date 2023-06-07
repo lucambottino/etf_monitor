@@ -80,6 +80,13 @@ def generate_data():
             text = requests.get(url).text
             return float(re.search(r'Ether<\/div><div class="jsx-3311999459 price large">\$<!-- -->(.*)</div><div class="jsx-3311999459 change"><img src="data:image', text).group(1).split("<")[0].replace(",", ""))
 
+        # qbtc11
+        elif ticker == "QBTC11":
+            url = "https://www.cfbenchmarks.com/data/indices/BRTI"
+            text = requests.get(url).text
+            return float(re.search('<span class="jsx-635166206 price xxl">\$<!-- -->(.*)<span class="jsx-635166206 xl change', text).group(1).replace(",", ""))
+
+        # usd_brl
         elif ticker == "usd_brl":
             url = "https://www.investing.com/currencies/usd-brl"
             text  = requests.get(url).text
@@ -87,16 +94,16 @@ def generate_data():
         else:
             return None
         
-
     # BRL Index / fair
     ratios = {
         'BITH11': 4258.734636634171,
         'ETHE11': 341.19311084492495,
         'HASH11': 346.95267778634013,
-        'WEB311': 64.53878064106745
+        'WEB311': 64.53878064106745,
+        'QBTC11': 16124.4203
     }
     
-    assets = ["WEB311", "HASH11", "ETHE11", "BITH11"]
+    assets = ["QBTC11", "WEB311", "HASH11", "ETHE11", "BITH11"]
     
     response = {}
     threads = []
