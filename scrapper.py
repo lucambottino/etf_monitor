@@ -6,11 +6,9 @@ from datetime import datetime
 import json
 import yfinance as yf
 
-import dash
-import dash_core_components as dcc
-import dash_html_components as html
-import dash_table
-from dash.dependencies import Input, Output
+import streamlit as st
+from streamlit_autorefresh import st_autorefresh
+
 
 from threading import Thread
 
@@ -149,8 +147,6 @@ def calculculate_ratios():
         json.dump(ratios, file)
     
 
-import streamlit as st
-from streamlit_autorefresh import st_autorefresh
 
 st.dataframe(generate_data())
 
