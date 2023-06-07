@@ -4,11 +4,9 @@ import re
 import numpy as np
 from datetime import datetime
 import json
-import yfinance as yf
 
 import streamlit as st
 from streamlit_autorefresh import st_autorefresh
-
 
 from threading import Thread
 
@@ -83,10 +81,9 @@ def generate_data():
             return float(re.search(r'Ether<\/div><div class="jsx-3311999459 price large">\$<!-- -->(.*)</div><div class="jsx-3311999459 change"><img src="data:image', text).group(1).split("<")[0].replace(",", ""))
 
         elif ticker == "usd_brl":
-            stock = yf.Ticker("USDBRL=X")
-            info = stock.info
-            usd_brl = (info["bid"]+info["ask"]) / 2
-            return usd_brl
+            url = "https://www.investing.com/currencies/usd-brl"
+            text  = requests.get(url).text
+            return float(re.search(r'class="text-2xl" data-test="instrument-price-last">(.*)<\/span><div class="text-xl flex items-end flex-wrap">', text).group(1))
         else:
             return None
         
@@ -150,6 +147,6 @@ def calculculate_ratios():
 
 st.dataframe(generate_data())
 
-st_autorefresh(interval=60*1000, limit=100000000, key="fizzbuzzcounter")
+st_autorefresh(interval=60*1000, limit=100000000, key="counter")
 
 
