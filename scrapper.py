@@ -60,37 +60,39 @@ def generate_data():
         if ticker == "WEB311":
             url = "https://www.cfbenchmarks.com/data/indices/CFSPMWLDN_RTI_TR"
             text = requests.get(url).text
-            return float(re.search('class="jsx-4214436125 stats"><span class="jsx-4214436125 price xxl">(.*)<span class="jsx-4214436125 xl', text).group(1).replace(",", ""))
+            return float(re.search('class="font-semibold text-sm md:text-2xl">\$(.*)<\/span><span class="font-semibold text-xs md:text-1xl', text).group(1).replace(",", ""))
             
         # hash11
         elif ticker == "HASH11":
             url = "https://www.cfbenchmarks.com/data/indices/NCI"
             text = requests.get(url).text
-            return float(re.search('class="jsx-4214436125 stats"><span class="jsx-4214436125 price xxl">(.*)<span class="jsx-4214436125 xl', text).group(1).replace(",", ""))
+            return float(re.search('class="font-semibold text-sm md:text-2xl">\$(.*)<\/span><span class="font-semibold text-xs md:text-1xl', text).group(1).replace(",", ""))
         
         # bith11
         elif ticker == "BITH11":
             url = "https://www.cfbenchmarks.com/data/indices/NQBTC"
             text = requests.get(url).text
-            return float(re.search('-->(.*)</div><div class="jsx-3311999459 change"><img src="data:image', text).group(1).split("<")[0].replace(",", ""))
+            return float(re.search('class="font-semibold text-sm md:text-2xl">\$(.*)<\/span><span class="font-semibold text-xs md:text-1xl', text).group(1).replace(",", ""))
 
         # ethe11
         elif ticker == "ETHE11":
             url = "https://www.cfbenchmarks.com/data/indices/NQETH"
             text = requests.get(url).text
-            return float(re.search(r'Ether<\/div><div class="jsx-3311999459 price large">\$<!-- -->(.*)</div><div class="jsx-3311999459 change"><img src="data:image', text).group(1).split("<")[0].replace(",", ""))
+            return float(re.search('class="font-semibold text-sm md:text-2xl">\$(.*)<\/span><span class="font-semibold text-xs md:text-1xl', text).group(1).replace(",", ""))
 
         # qbtc11
         elif ticker == "QBTC11":
             url = "https://www.cfbenchmarks.com/data/indices/BRTI"
             text = requests.get(url).text
-            return float(re.search('<span class="jsx-635166206 price xxl">\$<!-- -->(.*)<span class="jsx-635166206 xl change', text).group(1).replace(",", ""))
+            return float(re.search('class="font-semibold text-sm md:text-2xl">\$(.*)<\/span><span class="font-semibold text-xs md:text-1xl', text).group(1).replace(",", ""))
 
         # usd_brl
         elif ticker == "usd_brl":
             url = "https://www.investing.com/currencies/usd-brl"
-            text  = requests.get(url).text
-            return float(re.search(r'class="text-2xl" data-test="instrument-price-last">(.*)<\/span><div class="text-xl flex items-end flex-wrap">', text).group(1))
+            text = requests.get(url).text
+            return 4.8373
+            # return float(re.search('<span class="text-2xl" data-test="instrument-price-last">([\d.]+)<\/span>', text).group(1).replace(",", ""))
+
         else:
             return None
         
@@ -116,6 +118,8 @@ def generate_data():
     for thread in threads:
         thread.join()
 
+    response["usd_brl"] = get_data("usd_brl")
+    print(response)
     usd_brl = response['usd_brl']
 
     res = {}
