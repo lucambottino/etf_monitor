@@ -4,6 +4,7 @@ import re
 import numpy as np
 from datetime import datetime
 import json
+import yfinance as yf
 
 import streamlit as st
 from streamlit_autorefresh import st_autorefresh
@@ -88,9 +89,10 @@ def generate_data():
 
         # usd_brl
         elif ticker == "usd_brl":
-            url = "https://www.cnbc.com/quotes/BRL%3D?qsearchterm="
-            text = requests.get(url).text
-            return float(re.search('class="QuoteStrip-lastPriceStripContainer"><span class="QuoteStrip-lastPrice">(.*)</span><span class="QuoteStrip-unchanged"><span>UNCH</span><span>', text).group(1).replace(",", ""))
+            stock = yf.Ticker("BRL=X")
+            info = stock.info
+            price = np.mean([float(info["bid"]), float(info["ask"])])
+            return price
         else:
             return None
         
@@ -116,7 +118,7 @@ def generate_data():
     for thread in threads:
         thread.join()
 
-    # response["usd_brl"] = get_data("usd_brl")
+    response["usd_brl"] = get_data("usd_brl")
     # print(response)
     usd_brl = response['usd_brl']
 
